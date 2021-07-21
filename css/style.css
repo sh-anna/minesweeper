@@ -1,0 +1,67 @@
+.container{
+    background-image: url('../image/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 1000px;
+}
+h2, h1, .level{
+    text-align: center;
+    font-family: 'Merienda', cursive;
+}
+h2{
+    padding-top: 40px;
+}
+h1{
+    padding-top: 20px;
+    font-size: 70PX;
+}
+label{
+    border: 2px solid;
+    border-radius: 5%;
+    font-size: 25px;
+    margin: 10px;
+    padding: 10px; 
+    width: 115px;  
+}
+.gamer{
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Merienda', cursive;
+    text-align: center; 
+}
+h3{
+    display: inline-block;
+    padding: 30px;
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    padding: 10px;
+}
+.board {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.418);
+    border-radius: 5%;
+    border: 5px #754F34 solid;
+    /* display: inline-block; */
+    
+    
+    
+
+}
+td{
+    width: 65px;
+    height: 65px;
+    text-align: center;
+    font-size: 1.5em;
+    border: 2px black solid;
+    border-radius: 5%;
+    border-spacing: 8px;
+    cursor: pointer;
+}
+td:hover{
+    background-color: rgba(250, 248, 248, 0.486);
+}
+
