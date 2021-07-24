@@ -1,168 +1,254 @@
-"use strict";
+function getMatrix(columns, rows) {
+  const matrix = [];
 
-//
-// Show a timer that starts on first click (right / left) and stops when game is over.
-// • Left click reveals the cell’s content
-// • Right click flags/unflags a suspected cell (you cannot reveal a flagged cell)
+  var idCounter = 1;
 
-// Game ends when:
-// o LOSE: when clicking a mine, all mines should be revealed
-// o WIN: all the mines are flagged, and all the other cells are shown
-// • Support 3 levels of the game
-// o Beginner (4*4 with 2 MINES)
-// o Medium (8 * 8 with 12 MINES)
-// o Expert (12 * 12 with 30 MINES)
+  for (var y = 0; y < rows; y++) {
+    const row = [];
 
-// • If you have the time, make your Minesweeper look great.
-// • Expanding: When left clicking on cells there are 3 possible cases we want to address:
-// o MINE – reveal the mine clicked
-// o Cell with neighbors – reveal the cell alone
-// o Cell without neighbors – expand it and its 1st degree neighbors
+    for (var x = 0; x < columns; x++) {
+      row.push({
+        id: idCounter++,
+        left: false,
+        right: false,
+        show: false,
+        flag: false,
+        mine: false,
+        potencial: false,
+        number: 0,
+        x,
+        y,
+      });
+    }
 
-const MINE = "💣";
-const FLAG = "🚩";
-const EMTY = "";
-const noRightClick = document.querySelector("myElement");
+    matrix.push(row);
+  }
 
-var gBoard;
-var gLevel;
-var gGame;
-
-var gSelectedElCell = null;
-var gCell = {
-  minesAroundCount: 4,
-  isShown: true,
-  isMine: false,
-};
-
-var gLevel = [
-  {
-    SIZE: 4,
-    MINE: 2,
-  },
-  {
-    SIZE: 8,
-    MINE: 12,
-  },
-  {
-    SIZE: 12,
-    MINE: 30,
-  },
-];
-
-var gBoardSize = gLevel[0].SIZE;
-
-var gGame = {
-  isOn: false,
-  shownCount: 0,
-  markedCount: 0,
-  secsPassed: 0,
-};
-
-function initGame() {
-  var board = buildBoard();
-  renderBoard(board);
-  // setMinesNegsCount(board)
+  return matrix;
 }
 
-// function selectedLevel(gBoardSize) {
-//     if (onclick.value === '4') {
-//         return gBoardSize = 4
-//     } else if (onclick.value === '8') {
-//         gBoardSize = 8
-//     } else gBoardSize = 12
-//     buildBoard()
-//     initGame()
-//      gameOver()
-// }
+function getRandomFreeCell(matrix) {
+  const freeCells = [];
 
-//Build the game board
-function buildBoard() {
-  var board = [];
-  for (var i = 0; i < 4; i++) {
-    board.push([]);
-    for (var j = 0; j < 4; j++) {
-      board[i][j] = "";
-      if ((i === 0 && j === 1) || (i === 3 && j === 1))
-        board[i][j] = gCell.Mine = true;
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      const cell = matrix[y][x];
+
+      if (!cell.mine) {
+        freeCells.push(cell);
+      }
     }
   }
-  return board;
-  // console.log(board);
+
+  const index = Math.floor(Math.random() * freeCells.length);
+  return freeCells[index];
 }
 
-function setMinesNegsCount(board) {
-  var negsBordCount = 0;
-  for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= board.length) continue;
-    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (j < 0 || j >= board[i].length) continue;
-      if (i === cellI && j === cellJ) continue;
-      if (board[i][j] === MINE) negsBordCount++;
+function setRandomMine(matrix) {
+  const cell = getRandomFreeCell(matrix);
+  cell.mine = true;
+
+  const cells = getAroundCells(matrix, cell.x, cell.y);
+
+  for (const cell of cells) {
+    cell.number++;
+  }
+}
+
+function getCell(matrix, x, y) {
+  if (!matrix[y] || !matrix[y][x]) {
+    return false;
+  }
+
+  return matrix[y][x];
+}
+
+function getAroundCells(matrix, x, y) {
+  const cells = [];
+
+  for (var dx = -1; dx <= 1; dx++) {
+    for (var dy = -1; dy <= 1; dy++) {
+      if (dx == 0 && dy == 0) {
+        continue;
+      }
+
+      const cell = getCell(matrix, x + dx, y + dy);
+
+      if (!cell) {
+        continue;
+      }
+
+      cells.push(cell);
     }
   }
-  return negBordCount;
+
+  return cells;
 }
-//console.log('negBordCount', negBordCount);
-function randomAssignMines(board, countMines) {
-  var minesIdx = [];
-  for (var i = 0; i < countMines; i++) {
-    var randomRow = getRandomInt(0, gSize);
-    var randomCol = getRandomInt(0, gSize);
-    var cell = randomRow + "" + randomCol;
-    while (minesIdx.includes(cell)) {
-      randomRow = getRandomInt(0, gSize);
-      randomCol = getRandomInt(0, gSize);
-      cell = randomRow + "" + randomCol;
+
+function getCellById(matrix, id) {
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      const cell = matrix[y][x];
+
+      if (cell.id === id) {
+        return cell;
+      }
     }
-    minesIdx.push(cell);
-    board[cell].type = MINE;
   }
-  return board;
+  return false;
 }
 
+function matrixToHtml(matrix) {
+  const gameElement = document.createElement('div');
+  gameElement.classList.add('minesweeper');
 
-function renderBoard(board) {
-  // console.table(buildBoard());
-  var strHtml = "";
-  for (var i = 0; i < board.length; i++) {
-    var row = board[i];
-    strHtml += "<tr>";
-    for (var j = 0; j < row.length; j++) {
-      var cell = row[j];
-      var tdId = `cell-${i}-${j}`;
-      strHtml += `<td id="${tdId}" onclick="cellClicked(this)">${cell}</td>`;
-      // strHTML += `<td class="${className}" onclick="cellClicked(this,${i},${j})" oncontextmenu="cellMarked(this, ${i}, ${j}); return false;">${cell}</td>`
+  for (var y = 0; y < matrix.length; y++) {
+    const rowElement = document.createElement('div');
+    rowElement.classList.add('row');
+
+    for (var x = 0; x < matrix[y].length; x++) {
+      const cell = matrix[y][x];
+      const imgElement = document.createElement('img');
+
+      imgElement.draggable = false; //מונע גרירת אלמנטים
+      imgElement.oncontextmenu = () => false;
+      imgElement.setAttribute('data-cell-id', cell.id);
+      rowElement.append(imgElement);
+
+      if (cell.flag) {
+        imgElement.src = 'img/11.png';
+        continue;
+      }
+
+      if (cell.potencial) {
+        imgElement.src = 'img/12.png';
+        continue;
+      }
+
+      if (!cell.show) {
+        imgElement.src = 'img/10.png';
+        continue;
+      }
+
+      if (cell.mine) {
+        imgElement.src = 'img/9.png';
+        continue;
+      }
+
+      if (cell.number) {
+        imgElement.src = 'img/' + cell.number + '.png';
+        continue;
+      }
+
+      imgElement.src = 'img/0.png';
     }
-    strHtml += "</tr>";
+
+    gameElement.append(rowElement);
   }
-  var elCell = document.querySelector(".board");
-  elCell.innerHTML = strHtml;
-  // console.log('elCell', elCell);
+
+  return gameElement;
 }
 
-function cellClicked(elCell, i, j) {
-    
-    
+function forEach(matrix, handler) {
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      handler(matrix[y][x]);
+    }
+  }
 }
 
+function openSpace(matrix, x, y) {
+  const cell = getCell(matrix, x, y);
 
+  if (cell.flag || cell.number || cell.mine) {
+    return;
+  }
 
-function cellMarked(elCell) {}
+  forEach(matrix, (x) => (x._marked = false));
 
-function checkGameOver() {}
+  cell._marked = true;
 
-function expandShown(board, elCell, i, j) {}
+  let flag = true;
+  while (flag) {
+    flag = false;
 
+    for (var y = 0; y < matrix.length; y++) {
+      for (var x = 0; x < matrix[y].length; x++) {
+        const cell = matrix[y][x];
 
-function gameOver() {
-    console.log('Game Over');
-    gGame.isOn = false;
-    // stopTimer()
+        if (!cell._marked || cell.number) {
+          continue;
+        }
+
+        const cells = getAroundCells(matrix, x, y);
+        for (const cell of cells) {
+          if (cell._marked) {
+            continue;
+          }
+
+          if (!cell.flag && !cell.mine) {
+            cell._marked = true;
+            flag = true;
+          }
+        }
+      }
+    }
+  }
+
+  forEach(matrix, (x) => {
+    if (x._marked) {
+      x.show = true;
+    }
+
+    delete x._marked;
+  });
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); //The maximum is inclusive and the minimum is inclusive
+function isWin(matrix) {
+  const flags = [];
+  const mines = [];
+
+  forEach(matrix, (cell) => {
+    if (cell.flag) {
+      flags.push(cell);
+    }
+
+    if (cell.mine) {
+      mines.push(cell);
+    }
+  });
+
+  if (flags.length !== mines.length) {
+    return false;
+  }
+
+  for (const cell of mines) {
+    if (!cell.flag) {
+      return false;
+    }
+  }
+
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      const cell = matrix[y][x];
+
+      if (!cell.mine && !cell.show) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+function isLoose(matrix) {
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      const cell = matrix[y][x];
+
+      if (cell.mine && cell.show) {
+        return true;
+      }
+    }
+  }
 }
