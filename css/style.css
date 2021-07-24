@@ -263,6 +263,9 @@ footer{
     text-decoration: none;
     color: #D9E8ED; 
 }
+.love a:hover{
+    color:#d9e8ed5e;
+}
 .gamer{
     margin-left: auto;
     margin-right: auto;
