@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MinE SweepeR Game</title>
+    <!-- css -->
     <link rel="stylesheet" href="./css/style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,28 +13,58 @@
     <!-- Bomd Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- favicon -->
-    <link rel="shortcut icon" href="./image/favicon.png" type="image/png">
-    
+    <link rel="shortcut icon" href="./img/favicon.png" type="image/png">
 </head>
-<body onkeyup="handleKey(event)" onload="initGame()">
+<body class="game">
     <div class='container'>
-    <h2>Sprint 1</h2>
-    <h1>MinE SweepeR <i class="fa fa-bomb"></i></h1>
-    <div class="level">
-        <label>Beginner (4*4)<input type="radio" id="level1" value="4" name="radio" onclick="selectedLevel(this)"></label>
-        <label>Medium (8*8)<input type="radio" id="level2" value="8" name="radio" onclick="selectedLevel(this)"></label>
-        <label>Expert (12*12)<input type="radio" id="level3" value="12" name="radio" onclick="selectedLevel(this)"></label>
+        <h2>Sprint 1</h2>
+        <h1>MinE SweepeR <i class="fa fa-bomb"></i></h1>
+        <form class="controls" action="" method="get">
+            <div class="difficulty">
+                <input class="skill" type="radio" name="difficulty" value="1" id="easy" checked>
+                <label class="label" for="easy">Beginner</label>
+                <input class="skill" type="radio" name="difficulty" value="1.5" id="average">
+                <label class="label" for="average">Medium</label>
+                <input class="skill" type="radio" name="difficulty" value="2.5" id="hard">
+                <label class="label" for="hard">Expert</label>
+            </div>
+            </form>
+            <form class="controls" action="" method="get">
+            <div class="size">
+                <label class="label-width" for="width">Width<input class="field-width" type="number" value="4" min="4" max="30" step="1" id="width"></label>
+                <span></span>
+                <label class="label-height" for="height">Height<input class="field-height" type="number" value="4" min="4" max="30" step="1" id="height"></label>
+            </div>
+        </form>
+        <form class="controls" action="" method="get">
+            <div class="gamer">
+                <!-- <h3>Game Time: <span class="time">0</span></h3> -->
+                <h3>Hints: <span class="cell">0</span></h3>
+                <button class="smile" id='smile'><img src="./img/win.png" alt="emoji"></button>
+                <h3>Lives: <span class="lives">3</span></h3>
+            </div>
+        </form>
+
+        <div id="app"></div>
+        <div class="restartButton">
+            <button class="restart" type="button">Restart</button> 
+        </div>
+    
+        <div class="gameover modal">
+            <img class="end" src="img/gameover.jpg" width="572" height="479" alt="GAMEOVER"> 
+            <button class="close over" type="button"></button>
+        </div>
+       
+        <div class="win modal">
+            <img class="end" src="img/win.jpg" width="572" height="479" alt="WIN"> 
+            <button class="close youwin" type="button"></button>
+        </div>
+       
+        <footer>
+            <p class="love">Made with<span>&hearts;</span>  by <a href="https://github.com/sh-anna">Anna Sharipkin</a></p>
+        </footer>
     </div>
-    <div class="gamer">
-        <h3>Game Time: <span class="time">0</span></h3>
-        <h3>Cell: <span class="cell">0</span></h3>
-        <h3>Lives: <span class="lives">3</span></h3>
-    </div>
-    <table>
-        <tbody class="board" oncontextmenu="return false"></tbody>
-    </table>
-    </div>
-    <script src="./js/utils.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
