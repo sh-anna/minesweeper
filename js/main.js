@@ -87,7 +87,7 @@ function getAroundCells(matrix, x, y) {
 
 function getCellById(matrix, id) {
   for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
 
       if (cell.id === id) {
@@ -99,48 +99,48 @@ function getCellById(matrix, id) {
 }
 
 function matrixToHtml(matrix) {
-  const gameElement = document.createElement('div');
-  gameElement.classList.add('minesweeper');
+  const gameElement = document.createElement("div");
+  gameElement.classList.add("minesweeper");
 
   for (var y = 0; y < matrix.length; y++) {
-    const rowElement = document.createElement('div');
-    rowElement.classList.add('row');
+    const rowElement = document.createElement("div");
+    rowElement.classList.add("row");
 
     for (var x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
-      const imgElement = document.createElement('img');
+      const imgElement = document.createElement("img");
 
-      imgElement.draggable = false; //מונע גרירת אלמנטים
+      imgElement.draggable = false;
       imgElement.oncontextmenu = () => false;
-      imgElement.setAttribute('data-cell-id', cell.id);
+      imgElement.setAttribute("data-cell-id", cell.id);
       rowElement.append(imgElement);
 
       if (cell.flag) {
-        imgElement.src = 'img/11.png';
+        imgElement.src = "img/11.png";
         continue;
       }
 
       if (cell.potencial) {
-        imgElement.src = 'img/12.png';
+        imgElement.src = "img/12.png";
         continue;
       }
 
       if (!cell.show) {
-        imgElement.src = 'img/10.png';
+        imgElement.src = "img/10.png";
         continue;
       }
 
       if (cell.mine) {
-        imgElement.src = 'img/9.png';
+        imgElement.src = "img/9.png";
         continue;
       }
 
       if (cell.number) {
-        imgElement.src = 'img/' + cell.number + '.png';
+        imgElement.src = "img/" + cell.number + ".png";
         continue;
       }
 
-      imgElement.src = 'img/0.png';
+      imgElement.src = "img/0.png";
     }
 
     gameElement.append(rowElement);

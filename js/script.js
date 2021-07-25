@@ -1,13 +1,13 @@
 var matrix = null;
 var running = null;
 
-var width = document.getElementById('width');
-var height = document.getElementById('height');
-var skills = document.getElementsByName('difficulty');
+var width = document.getElementById("width");
+var height = document.getElementById("height");
+var skills = document.getElementsByName("difficulty");
 
 var columns = width.value;
 var rows = height.value;
-var mines = Math.round((width.value * height.value) / 2);
+var mines = Math.round((width.value * height.value) / 15);
 
 width.onchange = function () {
   columns = width.value;
@@ -17,7 +17,7 @@ height.onchange = function () {
   rows = height.value;
 };
 
-for (let i = 0; i < skills.length; i++) {
+for (var i = 0; i < skills.length; i++) {
   skills[i].onchange = minesNum;
 }
 
@@ -28,35 +28,35 @@ function minesNum() {
 init(columns, rows, mines);
 
 document
-  .querySelector('.restart' && '.smile')
-  .addEventListener('click', () => init(columns, rows, mines));
+  .querySelector(".restart")
+  // .querySelector('.smile')
+  .addEventListener("click", () => init(columns, rows, mines));
 
 function init(columns, rows, mines) {
   matrix = getMatrix(columns, rows);
   running = true;
 
-  for (let i = 0; i < mines; i++) {
+  for (var i = 0; i < mines; i++) {
     setRandomMine(matrix);
   }
 
   update();
 }
 
-var closeWin = document.querySelector('.close.youwin');
-var win = document.querySelector('.win');
+var closeWin = document.querySelector(".close.youwin");
+var win = document.querySelector(".win");
 
-closeWin.addEventListener('click', function (evt) {
+closeWin.addEventListener("click", function (evt) {
   evt.preventDefault();
-  win.classList.toggle('appear');
+  win.classList.toggle("appear");
 });
 
-var closeOver = document.querySelector('.close.over');
-var gameover = document.querySelector('.gameover');
+let closeOver = document.querySelector(".close.over");
+let gameover = document.querySelector(".gameover");
 
-
-closeOver.addEventListener('click', function (evt) {
+closeOver.addEventListener("click", function (evt) {
   evt.preventDefault();
-  gameover.classList.toggle('appear');
+  gameover.classList.toggle("appear");
 });
 
 function update() {
@@ -66,23 +66,23 @@ function update() {
 
   const gameElement = matrixToHtml(matrix);
 
-  const appElement = document.querySelector('#app');
-  appElement.innerHTML = '';
+  const appElement = document.querySelector("#app");
+  appElement.innerHTML = "";
   appElement.append(gameElement);
 
-  appElement.querySelectorAll('img').forEach((imgElement) => {
-    imgElement.addEventListener('mousedown', mousedownHandler);
-    imgElement.addEventListener('mouseup', mouseupHandler);
-    imgElement.addEventListener('mouseleave', mouseleaveHandler);
+  appElement.querySelectorAll("img").forEach((imgElement) => {
+    imgElement.addEventListener("mousedown", mousedownHandler);
+    imgElement.addEventListener("mouseup", mouseupHandler);
+    imgElement.addEventListener("mouseleave", mouseleaveHandler);
   });
 
   if (isLoose(matrix)) {
-    var gameover = document.querySelector('.gameover');
-    gameover.classList.add('appear');
+    var gameover = document.querySelector(".gameover");
+    gameover.classList.add("appear");
     running = false;
   } else if (isWin(matrix)) {
-    var win = document.querySelector('.win');
-    win.classList.add('appear');
+    var win = document.querySelector(".win");
+    win.classList.add("appear");
     running = false;
   }
 }
