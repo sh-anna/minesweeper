@@ -1,13 +1,13 @@
-let matrix = null;
-let running = null;
+var matrix = null;
+var running = null;
 
-let width = document.getElementById("width");
-let height = document.getElementById("height");
-let skills = document.getElementsByName("difficulty");
+var width = document.getElementById('width');
+var height = document.getElementById('height');
+var skills = document.getElementsByName('difficulty');
 
-let columns = width.value;
-let rows = height.value;
-let mines = Math.round((width.value * height.value) / 15);
+var columns = width.value;
+var rows = height.value;
+var mines = Math.round((width.value * height.value) / 15);
 
 width.onchange = function () {
   columns = width.value;
@@ -17,7 +17,7 @@ height.onchange = function () {
   rows = height.value;
 };
 
-for (let i = 0; i < skills.length; i++) {
+for (var i = 0; i < skills.length; i++) {
   skills[i].onchange = minesNum;
 }
 
@@ -36,27 +36,27 @@ function init(columns, rows, mines) {
   matrix = getMatrix(columns, rows);
   running = true;
 
-  for (let i = 0; i < mines; i++) {
+  for (var i = 0; i < mines; i++) {
     setRandomMine(matrix);
   }
 
   update();
 }
 
-let closeWin = document.querySelector(".close.youwin");
-let win = document.querySelector(".win");
+var closeWin = document.querySelector('.close.youwin');
+var win = document.querySelector('.win');
 
-closeWin.addEventListener("click", function (evt) {
+closeWin.addEventListener('click', function (evt) {
   evt.preventDefault();
-  win.classList.toggle("appear");
+  win.classList.toggle('appear');
 });
 
-let closeOver = document.querySelector(".close.over");
-let gameover = document.querySelector(".gameover");
+var closeOver = document.querySelector('.close.over');
+var gameover = document.querySelector('.gameover');
 
-closeOver.addEventListener("click", function (evt) {
+closeOver.addEventListener('click', function (evt) {
   evt.preventDefault();
-  gameover.classList.toggle("appear");
+  gameover.classList.toggle('appear');
 });
 
 function update() {
@@ -66,23 +66,23 @@ function update() {
 
   const gameElement = matrixToHtml(matrix);
 
-  const appElement = document.querySelector("#app");
-  appElement.innerHTML = "";
+  const appElement = document.querySelector('#app');
+  appElement.innerHTML = '""';
   appElement.append(gameElement);
 
-  appElement.querySelectorAll("img").forEach((imgElement) => {
-    imgElement.addEventListener("mousedown", mousedownHandler);
-    imgElement.addEventListener("mouseup", mouseupHandler);
-    imgElement.addEventListener("mouseleave", mouseleaveHandler);
+  appElement.querySelectorAll('img').forEach((imgElement) => {
+    imgElement.addEventListener('mousedown', mousedownHandler);
+    imgElement.addEventListener('mouseup', mouseupHandler);
+    imgElement.addEventListener('mouseleave', mouseleaveHandler);
   });
 
   if (isLoose(matrix)) {
-    let gameover = document.querySelector(".gameover");
-    gameover.classList.add("appear");
+    var gameover = document.querySelector('.gameover');
+    gameover.classList.add('appear');
     running = false;
   } else if (isWin(matrix)) {
-    let win = document.querySelector(".win");
-    win.classList.add("appear");
+    var win = document.querySelector('.win');
+    win.classList.add('appear');
     running = false;
   }
 }
@@ -144,7 +144,7 @@ function mouseleaveHandler(event) {
 
 function getInfo(event) {
   const element = event.target;
-  const cellId = parseInt(element.getAttribute("data-cell-id"));
+  const cellId = parseInt(element.getAttribute('data-cell-id'));
 
   return {
     left: event.which === 1,
