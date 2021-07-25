@@ -20,6 +20,8 @@ h1{
 #app {
     margin: 10px auto;
     text-align: center;
+    padding-right: 15px;
+    
 }
 
 .minesweeper {
@@ -272,14 +274,15 @@ footer{
     font-family: 'Merienda', cursive;
     text-align: center; 
 }
-.gamer h3{
+/* .gamer h3{
     display: inline-block;
     padding: 30px;
-}
+} */
 
 .smile{
     border-radius: 4px;
     border:2px solid black;
+    
 }
 .smile:hover{
     box-shadow: 1px 1px 1px black;
