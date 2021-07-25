@@ -1,12 +1,12 @@
 function getMatrix(columns, rows) {
   const matrix = [];
 
-  var idCounter = 1;
+  let idCounter = 1;
 
-  for (var y = 0; y < rows; y++) {
+  for (let y = 0; y < rows; y++) {
     const row = [];
 
-    for (var x = 0; x < columns; x++) {
+    for (let x = 0; x < columns; x++) {
       row.push({
         id: idCounter++,
         left: false,
@@ -30,8 +30,8 @@ function getMatrix(columns, rows) {
 function getRandomFreeCell(matrix) {
   const freeCells = [];
 
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
 
       if (!cell.mine) {
@@ -66,8 +66,8 @@ function getCell(matrix, x, y) {
 function getAroundCells(matrix, x, y) {
   const cells = [];
 
-  for (var dx = -1; dx <= 1; dx++) {
-    for (var dy = -1; dy <= 1; dy++) {
+  for (let dx = -1; dx <= 1; dx++) {
+    for (let dy = -1; dy <= 1; dy++) {
       if (dx == 0 && dy == 0) {
         continue;
       }
@@ -86,7 +86,7 @@ function getAroundCells(matrix, x, y) {
 }
 
 function getCellById(matrix, id) {
-  for (var y = 0; y < matrix.length; y++) {
+  for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
 
@@ -100,13 +100,13 @@ function getCellById(matrix, id) {
 
 function matrixToHtml(matrix) {
   const gameElement = document.createElement("div");
-  gameElement.classList.add("minesweeper");
+  gameElement.classList.add('minesweeper');
 
-  for (var y = 0; y < matrix.length; y++) {
+  for (let y = 0; y < matrix.length; y++) {
     const rowElement = document.createElement("div");
     rowElement.classList.add("row");
 
-    for (var x = 0; x < matrix[y].length; x++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
       const imgElement = document.createElement("img");
 
@@ -150,8 +150,8 @@ function matrixToHtml(matrix) {
 }
 
 function forEach(matrix, handler) {
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       handler(matrix[y][x]);
     }
   }
@@ -172,8 +172,8 @@ function openSpace(matrix, x, y) {
   while (flag) {
     flag = false;
 
-    for (var y = 0; y < matrix.length; y++) {
-      for (var x = 0; x < matrix[y].length; x++) {
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[y].length; x++) {
         const cell = matrix[y][x];
 
         if (!cell._marked || cell.number) {
@@ -228,8 +228,8 @@ function isWin(matrix) {
     }
   }
 
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
 
       if (!cell.mine && !cell.show) {
@@ -242,8 +242,8 @@ function isWin(matrix) {
 }
 
 function isLoose(matrix) {
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
       const cell = matrix[y][x];
 
       if (cell.mine && cell.show) {

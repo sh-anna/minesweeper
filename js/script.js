@@ -1,13 +1,13 @@
-var matrix = null;
-var running = null;
+let matrix = null;
+let running = null;
 
-var width = document.getElementById("width");
-var height = document.getElementById("height");
-var skills = document.getElementsByName("difficulty");
+let width = document.getElementById("width");
+let height = document.getElementById("height");
+let skills = document.getElementsByName("difficulty");
 
-var columns = width.value;
-var rows = height.value;
-var mines = Math.round((width.value * height.value) / 15);
+let columns = width.value;
+let rows = height.value;
+let mines = Math.round((width.value * height.value) / 15);
 
 width.onchange = function () {
   columns = width.value;
@@ -17,7 +17,7 @@ height.onchange = function () {
   rows = height.value;
 };
 
-for (var i = 0; i < skills.length; i++) {
+for (let i = 0; i < skills.length; i++) {
   skills[i].onchange = minesNum;
 }
 
@@ -28,23 +28,23 @@ function minesNum() {
 init(columns, rows, mines);
 
 document
-  .querySelector(".restart")
+  .querySelector('.restart')
   // .querySelector('.smile')
-  .addEventListener("click", () => init(columns, rows, mines));
+  .addEventListener('click', () => init(columns, rows, mines));
 
 function init(columns, rows, mines) {
   matrix = getMatrix(columns, rows);
   running = true;
 
-  for (var i = 0; i < mines; i++) {
+  for (let i = 0; i < mines; i++) {
     setRandomMine(matrix);
   }
 
   update();
 }
 
-var closeWin = document.querySelector(".close.youwin");
-var win = document.querySelector(".win");
+let closeWin = document.querySelector(".close.youwin");
+let win = document.querySelector(".win");
 
 closeWin.addEventListener("click", function (evt) {
   evt.preventDefault();
@@ -77,11 +77,11 @@ function update() {
   });
 
   if (isLoose(matrix)) {
-    var gameover = document.querySelector(".gameover");
+    let gameover = document.querySelector(".gameover");
     gameover.classList.add("appear");
     running = false;
   } else if (isWin(matrix)) {
-    var win = document.querySelector(".win");
+    let win = document.querySelector(".win");
     win.classList.add("appear");
     running = false;
   }
