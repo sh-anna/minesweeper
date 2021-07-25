@@ -67,7 +67,7 @@ function update() {
   const gameElement = matrixToHtml(matrix);
 
   const appElement = document.querySelector('#app');
-  appElement.innerHTML = '""';
+  appElement.innerHTML = '';
   appElement.append(gameElement);
 
   appElement.querySelectorAll('img').forEach((imgElement) => {
